@@ -1,29 +1,12 @@
 import { createServer } from '@graphql-yoga/node';
-
-const typeDefs = /* GraphQL */ `
-  type Query {
-    users: [User!]!
-  }
-  type User {
-    name: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    users(parent: any, args: any, context: any) {
-      return [{ name: 'Nextjs' }];
-    },
-  },
-};
+import { createContext } from '../../graphql/context';
+import { schema } from '../../graphql/schema';
 
 const server = createServer({
-  schema: {
-    typeDefs,
-    resolvers,
-  },
+  schema,
+  context: createContext,
   endpoint: '/api/graphql',
-  // graphiql: false // uncomment to disable GraphiQL
+  graphiql: false, // uncomment to disable GraphiQL
 });
 
 export default server;

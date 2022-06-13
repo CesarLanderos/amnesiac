@@ -1,9 +1,15 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useQuery } from '@apollo/client';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useGetUsersQuery } from '../graphql/__generated__';
+import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
+  const { data } = useGetUsersQuery();
+
+  console.log('data?.users', data?.users);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -66,7 +72,7 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
