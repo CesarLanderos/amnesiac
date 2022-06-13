@@ -7,3 +7,6 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+  graphql/__generated__/fragmentTypes.json:
+    plugins:
+      - fragment-matcher
