@@ -1219,6 +1219,11 @@
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
+"@types/spotify-web-playback-sdk@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@types/spotify-web-playback-sdk/-/spotify-web-playback-sdk-0.1.12.tgz#e1178736dc76fee5c151a79d94913d522e8f1cd2"
+  integrity sha512-qlKVNdHiQLSztUoMTz7Zo8Dxmzcd1k89Ct2XsNMVl8BfCzotovae/hSLvHPoua/N8i592LZ1q0SsgtQH6JT+vA==
+
 "@types/ws@^8.0.0":
   version "8.5.3"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.5.3.tgz#7d25a1ffbecd3c4f2d35068d0b283c037003274d"
