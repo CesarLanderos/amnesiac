@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       const token =
         'BQALFRcAamYH6IsCDzJ4Z1upseDx04SoOOoBB6fIa4RwQC3HEMU8loTA4cQvSOU6rP-6VyFAWeLwPs-HY3k6YKSn0bkklrf5M7kgC7YUH1AwVMhVe1OqTl-kC5TKRdUsbA1PcKoWx4rUR4dbmjLLkIqAJ-1g2DDbFTx37dSt0-7QCcRZeU4H_KjRkSDh1BIxdcfo7ic';
       const player = new Spotify.Player({
-        name: 'Amnesia',
+        name: 'Amnesiac',
         getOAuthToken: (cb) => {
           cb(token);
         },
