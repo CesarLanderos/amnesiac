@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useContext } from 'react';
 import { SpotifyContext } from '../context/SpotifyContext';
 import { useGetUsersQuery } from '../graphql/__generated__';
@@ -20,6 +19,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <h1 className="text-3xl font-bold underline">Hello world!</h1>
         <button
           onClick={async () => {
             await api?.playAlbumOrPlaylist(

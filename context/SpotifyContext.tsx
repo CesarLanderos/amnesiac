@@ -1,42 +1,43 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Script from 'next/script';
 
-const getAPI = (player?: Spotify.Player, deviceId?: string) => ({
-  play: (uris: string[]) => {
-    return new Promise((resolve) => {
-      player?._options.getOAuthToken((access_token) => {
-        fetch(
-          `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-          {
-            method: 'PUT',
-            body: JSON.stringify({ uris }),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        ).then(resolve);
+const spotifyAPIRequest =
+  (player: Spotify.Player) =>
+  (url: string, method: string, body: Record<string, unknown>) => {
+    return new Promise(() => {
+      return player._options.getOAuthToken((token) => {
+        fetch(url, {
+          method,
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
       });
     });
-  },
-  playAlbumOrPlaylist: (context_uri: string) => {
-    return new Promise((resolve) => {
-      player?._options.getOAuthToken((access_token) => {
-        fetch(
-          `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-          {
-            method: 'PUT',
-            body: JSON.stringify({ context_uri }),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        ).then(resolve);
-      });
-    });
-  },
-});
+  };
+
+const getAPI = (player: Spotify.Player, deviceId: string) => {
+  const request = spotifyAPIRequest(player);
+
+  return {
+    play: (uris: string[]) => {
+      return request(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        'PUT',
+        { uris }
+      );
+    },
+    playAlbumOrPlaylist: (contextURI: string) => {
+      return request(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        'PUT',
+        { context_uri: contextURI }
+      );
+    },
+  };
+};
 
 export const SpotifyContext = React.createContext<{
   player?: Spotify.Player;
@@ -56,7 +57,7 @@ export const SpotifyProvider = ({ children }: Props) => {
   useEffect(() => {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const token =
-        'BQAfWyeaEP2hqmJAsRCyt48ecw6k6Iatg3XM-oXSXzOXL5tHZgsSvPoDTvjcIFhUVqTXk0qot0d1Zl2vK1L_J97b-qZuodUuvmOZp_a_WApiYo85Ykwo7mTc6qoxzY5jFTdMWht_G8OAOSZtb7ZMvk5Eqhbm-Ke1f6dD6D-eJ1vjstzGqAhvWf8LTQpu6r7pGhMTnZw';
+        'BQDlEe8JBKC8vfPwfrobDbb8MosOYUHB7KPgQfYqahXT6l4TXJGjyy2z9f29o_AxYKTPqt-wOXtFtj5qmdhyquS0wjeKUdvXmni4tgALnE7dRaOkqTPa7nj1LsJ_kKji92OnMPkugyCjW33Pe9n7FExJoNuHJlg7RFO6iNoHamWcNoeOFO1VH1YlEeTQisXRztSD958';
       const player = new Spotify.Player({
         name: 'Amnesiac',
         getOAuthToken: (cb) => {
@@ -107,7 +108,10 @@ export const SpotifyProvider = ({ children }: Props) => {
         value={{
           player,
           state,
-          api: useMemo(() => getAPI(player, deviceId), [deviceId, player]),
+          api: useMemo(() => {
+            if (!player || !deviceId) return;
+            return getAPI(player, deviceId);
+          }, [deviceId, player]),
         }}
       >
         {children}
